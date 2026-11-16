@@ -42,6 +42,8 @@ button { color: inherit; }
 .level-choice { display: flex; justify-content: space-between; align-items: center; min-height: 43px; padding: 0 12px; border: 1px solid #b89a70; border-radius: 5px; background: #fffaf0; cursor: pointer; }
 .level-choice.selected { border-color: #bd7845; background: #f8e6c8; font-weight: 700; }
 .level-choice span:last-child { color: #75654c; font-size: 12px; font-variant-numeric: tabular-nums; }
+.level-choice span:last-child svg { width: 16px; height: 16px; vertical-align: middle; }
+.level-choice:disabled { background: #eee8dd; color: #877f73; cursor: default; }
 .icon-button {
   display: inline-grid;
   place-items: center;
@@ -142,7 +144,7 @@ button { color: inherit; }
   background: #e9dcc4;
   border-top: 1px solid #b39b76;
 }
-.bottom-actions { display: flex; gap: 8px; }
+.bottom-actions { display: flex; gap: 5px; }
 .small-action {
   display: inline-flex;
   align-items: center;

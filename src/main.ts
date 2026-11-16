@@ -1,10 +1,10 @@
-import { createIcons, List, LockKeyhole, Music2, RotateCcw, Settings2, Undo2, Volume2, VolumeX, X } from 'lucide';
+import { createIcons, List, LockKeyhole, Music2, RotateCcw, Settings2, Undo2, Volume2, VolumeX, X, ZoomIn, ZoomOut } from 'lucide';
 import Phaser from 'phaser';
 import { MusicPlayer } from './audio/music';
 import { itemAssetUrl } from './game/assets';
 import { createGame, pickItem, retryGame, undoPick, unlockSlot, type GameState } from './game/model';
 import { GameScene } from './game/scene';
-import { loadSave, saveGame } from './game/save';
+import { loadSave, saveGame, unlockNextLevel, unlockedLevelIndex } from './game/save';
 import { level1 } from './levels/level1';
 import { level2 } from './levels/level2';
 import { level3 } from './levels/level3';
@@ -15,8 +15,10 @@ import { level7 } from './levels/level7';
 import './styles.css';
 
 const levels = [level1, level2, level3, level4, level5, level6, level7];
+const levelIds = levels.map((entry) => entry.id);
 const selectedLevel = new URLSearchParams(window.location.search).get('level');
-const level = levels.find((entry) => entry.id === selectedLevel) ?? level1;
+const selectedIndex = levels.findIndex((entry) => entry.id === selectedLevel);
+const level = selectedIndex >= 0 && selectedIndex <= unlockedLevelIndex(levelIds) ? levels[selectedIndex] : level1;
 const app = document.querySelector<HTMLDivElement>('#app')!;
 app.innerHTML = `
   <main class="game-shell">
@@ -33,6 +35,8 @@ app.innerHTML = `
         <button class="small-action" id="undo" type="button" title="撤回"><i data-lucide="undo-2"></i><span>撤回</span></button>
         <button class="icon-button" id="retry" type="button" aria-label="重试本关" title="重试本关"><i data-lucide="rotate-ccw"></i></button>
         <button class="icon-button" id="music-toggle" type="button" aria-label="静音" title="静音"><i data-lucide="volume-2"></i></button>
+        <button class="icon-button" id="zoom-out" type="button" aria-label="缩小场景" title="缩小场景"><i data-lucide="zoom-out"></i></button>
+        <button class="icon-button" id="zoom-in" type="button" aria-label="放大场景" title="放大场景"><i data-lucide="zoom-in"></i></button>
       </div>
       <span class="level-stat" id="level-stat"></span>
     </footer>
@@ -49,17 +53,23 @@ let scene: GameScene;
 let sceneReady = false;
 let animating = false;
 
-const iconSet = { List, LockKeyhole, Music2, RotateCcw, Settings2, Undo2, Volume2, VolumeX, X };
+const iconSet = { List, LockKeyhole, Music2, RotateCcw, Settings2, Undo2, Volume2, VolumeX, X, ZoomIn, ZoomOut };
 function paintIcons(root: ParentNode = app): void {
   createIcons({ icons: iconSet, root: root as Element });
 }
 
-function currentCamera(): { x: number; y: number } {
+function currentCamera(): { x: number; y: number; zoom?: number } {
   return sceneReady ? scene.cameraPosition() : loadSave(level.id)?.camera ?? level.initialCamera ?? { x: 0, y: 0 };
 }
 
 function persist(): void {
   saveGame(level.id, state, currentCamera());
+}
+
+function updateZoomButtons(): void {
+  const zoom = sceneReady ? scene.zoomLevel() : 1;
+  document.querySelector<HTMLButtonElement>('#zoom-out')!.disabled = zoom <= .85;
+  document.querySelector<HTMLButtonElement>('#zoom-in')!.disabled = zoom >= 1.25;
 }
 
 async function flyItem(id: string, destination: HTMLElement): Promise<void> {
@@ -126,6 +136,7 @@ function render(): void {
   trayRoot.dataset.openCount = String(openCount);
   paintIcons();
   scene?.sync(state);
+  updateZoomButtons();
   persist();
 }
 
@@ -137,6 +148,8 @@ function showModal(title: string, body: string): void {
 }
 
 function goToLevel(id: string): void {
+  const index = levelIds.indexOf(id);
+  if (index < 0 || index > unlockedLevelIndex(levelIds)) return;
   persist();
   const url = new URL(window.location.href);
   url.searchParams.set('level', id);
@@ -144,9 +157,11 @@ function goToLevel(id: string): void {
 }
 
 function openLevels(): void {
+  const unlocked = unlockedLevelIndex(levelIds);
   const choices = levels.map((entry, index) => {
     const found = entry.id === level.id ? state.removed.length : loadSave(entry.id)?.state.removed.length ?? 0;
-    return `<button class="level-choice${entry.id === level.id ? ' selected' : ''}" type="button" data-level="${entry.id}"><span>${index + 1}. ${entry.name}</span><span>${found}/${entry.items.length}</span></button>`;
+    const locked = index > unlocked;
+    return `<button class="level-choice${entry.id === level.id ? ' selected' : ''}" type="button" data-level="${entry.id}" ${locked ? 'disabled' : ''}><span>${index + 1}. ${entry.name}</span><span>${locked ? '<i data-lucide="lock-keyhole"></i>' : `${found}/${entry.items.length}`}</span></button>`;
   }).join('');
   showModal('选择关卡', `<div class="level-list">${choices}</div>`);
   modal.querySelectorAll<HTMLButtonElement>('[data-level]').forEach((button) => {
@@ -155,11 +170,12 @@ function openLevels(): void {
 }
 
 function openWin(): void {
+  unlockNextLevel(levelIds, levels.indexOf(level));
   const nextLevel = levels[levels.indexOf(level) + 1];
   showModal('关卡完成', `<p class="dialog-copy">${level.name}已经整理完成。</p><div class="dialog-actions"><button class="small-action" id="play-again" type="button">再玩一次</button>${nextLevel ? '<button class="small-action primary-action" id="next-level" type="button">下一关</button>' : ''}</div>`);
   modal.querySelector<HTMLButtonElement>('#play-again')!.onclick = () => {
     state = retryGame(level);
-    scene.cameras.main.setScroll(level.initialCamera?.x ?? 0, level.initialCamera?.y ?? 0);
+    scene.resetView(level.initialCamera?.x ?? 0, level.initialCamera?.y ?? 0);
     modal.close();
     render();
   };
@@ -225,7 +241,7 @@ function openFailure(): void {
   modal.querySelector<HTMLButtonElement>('#undo-last')!.onclick = () => performUndo(undoInput, modal.querySelector<HTMLElement>('#undo-error')!);
   modal.querySelector<HTMLButtonElement>('#retry-level')!.onclick = () => {
     state = retryGame(level);
-    scene.cameras.main.setScroll(level.initialCamera?.x ?? 0, level.initialCamera?.y ?? 0);
+    scene.resetView(level.initialCamera?.x ?? 0, level.initialCamera?.y ?? 0);
     modal.close();
     render();
   };
@@ -276,7 +292,7 @@ document.querySelector<HTMLButtonElement>('#retry')!.onclick = () => {
   showModal('重试本关？', '<p class="dialog-copy">本关找到的物品和解锁格数将清空。</p><div class="dialog-actions"><button class="small-action primary-action" id="confirm-retry" type="button">重试本关</button></div>');
   modal.querySelector<HTMLButtonElement>('#confirm-retry')!.onclick = () => {
     state = retryGame(level);
-    scene.cameras.main.setScroll(level.initialCamera?.x ?? 0, level.initialCamera?.y ?? 0);
+    scene.resetView(level.initialCamera?.x ?? 0, level.initialCamera?.y ?? 0);
     modal.close();
     render();
   };
@@ -285,6 +301,12 @@ document.querySelector<HTMLButtonElement>('#music-toggle')!.onclick = () => {
   music.setMuted(!music.getSettings().muted);
   render();
 };
+for (const [id, step] of [['#zoom-out', -.1], ['#zoom-in', .1]] as const) {
+  document.querySelector<HTMLButtonElement>(id)!.onclick = () => {
+    scene.zoomBy(step);
+    updateZoomButtons();
+  };
+}
 trayRoot.addEventListener('click', (event) => {
   if (animating) return;
   if ((event.target as HTMLElement).closest('.locked')) openUnlock();
@@ -308,6 +330,7 @@ scene = new GameScene({
       : trayRoot.children[next.tray.indexOf(id)] as HTMLElement;
     animating = true;
     state = next;
+    music.playPick();
     persist();
     scene.hideItem(id);
     try {
@@ -319,7 +342,7 @@ scene = new GameScene({
     if (state.mode === 'full') openFailure();
     else if (state.mode === 'won') openWin();
   },
-  onCamera: persist,
+  onCamera: () => { persist(); updateZoomButtons(); },
   onReady: () => {
     sceneReady = true;
     persist();

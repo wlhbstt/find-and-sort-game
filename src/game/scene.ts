@@ -7,15 +7,19 @@ type SceneOptions = {
   level: Level;
   state: () => GameState;
   onPick: (id: string) => void;
-  onCamera: (x: number, y: number) => void;
+  onCamera: () => void;
   onReady?: () => void;
-  camera?: { x: number; y: number };
+  camera?: { x: number; y: number; zoom?: number };
 };
+
+const MIN_ZOOM = .85;
+const MAX_ZOOM = 1.25;
 
 export class GameScene extends Phaser.Scene {
   private readonly options: SceneOptions;
   private readonly sprites = new Map<string, Phaser.GameObjects.Image>();
   private down?: { x: number; y: number; lastX: number; lastY: number; itemId?: string; dragged: boolean };
+  private pinchDistance?: number;
   private cameraSaveTimer?: number;
 
   constructor(options: SceneOptions) {
@@ -63,13 +67,20 @@ export class GameScene extends Phaser.Scene {
 
     this.cameras.main.setBounds(0, 0, level.width, level.height);
     const camera = this.cameras.main;
+    camera.setZoom(Phaser.Math.Clamp(this.options.camera?.zoom ?? 1, MIN_ZOOM, MAX_ZOOM));
     camera.setScroll(this.options.camera?.x ?? 0, this.options.camera?.y ?? 0);
     this.clampCamera();
     this.scale.on('resize', (size: Phaser.Structs.Size) => {
       camera.setViewport(0, 0, size.width, size.height);
       this.clampCamera();
     });
+    this.input.addPointer(1);
     this.input.on('pointerdown', (pointer: Phaser.Input.Pointer, currentlyOver: Phaser.GameObjects.GameObject[]) => {
+      if (this.input.pointer1.isDown && this.input.pointer2.isDown) {
+        this.down = undefined;
+        this.pinchDistance = Phaser.Math.Distance.Between(this.input.pointer1.x, this.input.pointer1.y, this.input.pointer2.x, this.input.pointer2.y);
+        return;
+      }
       this.down = {
         x: pointer.x, y: pointer.y, lastX: pointer.x, lastY: pointer.y,
         itemId: currentlyOver[0]?.getData('itemId') as string | undefined,
@@ -77,6 +88,16 @@ export class GameScene extends Phaser.Scene {
       };
     });
     this.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
+      if (this.input.pointer1.isDown && this.input.pointer2.isDown) {
+        const distance = Phaser.Math.Distance.Between(this.input.pointer1.x, this.input.pointer1.y, this.input.pointer2.x, this.input.pointer2.y);
+        if (this.pinchDistance && distance > 0) {
+          this.setZoomAround(camera.zoom * distance / this.pinchDistance,
+            (this.input.pointer1.x + this.input.pointer2.x) / 2,
+            (this.input.pointer1.y + this.input.pointer2.y) / 2);
+        }
+        this.pinchDistance = distance;
+        return;
+      }
       if (!this.down || !pointer.isDown) return;
       const dx = pointer.x - this.down.lastX;
       const dy = pointer.y - this.down.lastY;
@@ -91,6 +112,11 @@ export class GameScene extends Phaser.Scene {
       this.down.lastY = pointer.y;
     });
     this.input.on('pointerup', () => {
+      if (this.pinchDistance !== undefined) {
+        this.pinchDistance = undefined;
+        this.down = undefined;
+        return;
+      }
       const down = this.down;
       this.down = undefined;
       if (!down || down.dragged || !down.itemId) return;
@@ -100,6 +126,9 @@ export class GameScene extends Phaser.Scene {
       } else {
         this.options.onPick(item.id);
       }
+    });
+    this.input.on('wheel', (pointer: Phaser.Input.Pointer, _over: Phaser.GameObjects.GameObject[], _dx: number, dy: number) => {
+      this.setZoomAround(camera.zoom + (dy < 0 ? .05 : -.05), pointer.x, pointer.y);
     });
     this.sync(this.options.state());
     this.options.onReady?.();
@@ -114,9 +143,25 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
-  cameraPosition(): { x: number; y: number } {
+  cameraPosition(): { x: number; y: number; zoom: number } {
     const camera = this.cameras?.main;
-    return camera ? { x: camera.scrollX, y: camera.scrollY } : { x: 0, y: 0 };
+    return camera ? { x: camera.scrollX, y: camera.scrollY, zoom: camera.zoom } : { x: 0, y: 0, zoom: 1 };
+  }
+
+  zoomLevel(): number {
+    return this.cameras.main.zoom;
+  }
+
+  zoomBy(step: number): void {
+    const camera = this.cameras.main;
+    this.setZoomAround(camera.zoom + step, camera.width / 2, camera.height / 2);
+  }
+
+  resetView(x: number, y: number): void {
+    const camera = this.cameras.main;
+    camera.setZoom(1);
+    camera.setScroll(x, y);
+    this.clampCamera();
   }
 
   itemScreenRect(id: string): { x: number; y: number; width: number; height: number } | null {
@@ -126,8 +171,8 @@ export class GameScene extends Phaser.Scene {
     const canvas = this.game.canvas.getBoundingClientRect();
     const camera = this.cameras.main;
     return {
-      x: canvas.left + (item.x - camera.scrollX) * camera.zoom,
-      y: canvas.top + (item.y - camera.scrollY) * camera.zoom,
+      x: canvas.left + camera.width * camera.originX + (item.x - camera.scrollX - camera.width * camera.originX) * camera.zoom,
+      y: canvas.top + camera.height * camera.originY + (item.y - camera.scrollY - camera.height * camera.originY) * camera.zoom,
       width: sprite.displayWidth * camera.zoom,
       height: sprite.displayHeight * camera.zoom,
     };
@@ -158,15 +203,26 @@ export class GameScene extends Phaser.Scene {
 
   private clampCamera(): void {
     const camera = this.cameras.main;
-    camera.scrollX = Phaser.Math.Clamp(camera.scrollX, 0, Math.max(0, this.options.level.width - camera.width / camera.zoom));
-    camera.scrollY = Phaser.Math.Clamp(camera.scrollY, 0, Math.max(0, this.options.level.height - camera.height / camera.zoom));
+    camera.scrollX = camera.clampX(camera.scrollX);
+    camera.scrollY = camera.clampY(camera.scrollY);
+  }
+
+  private setZoomAround(value: number, x: number, y: number): void {
+    const camera = this.cameras.main;
+    const zoom = Phaser.Math.Clamp(value, MIN_ZOOM, MAX_ZOOM);
+    if (zoom === camera.zoom) return;
+    const previous = camera.zoom;
+    camera.setZoom(zoom);
+    camera.scrollX += (x - camera.width * camera.originX) * (1 / previous - 1 / zoom);
+    camera.scrollY += (y - camera.height * camera.originY) * (1 / previous - 1 / zoom);
+    this.clampCamera();
+    this.queueCameraSave();
   }
 
   private queueCameraSave(): void {
     if (this.cameraSaveTimer !== undefined) window.clearTimeout(this.cameraSaveTimer);
     this.cameraSaveTimer = window.setTimeout(() => {
-      const { x, y } = this.cameraPosition();
-      this.options.onCamera(x, y);
+      this.options.onCamera();
     }, 180);
   }
 }

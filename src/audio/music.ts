@@ -53,6 +53,7 @@ export class MusicPlayer {
   private settings = readSettings();
   private context?: AudioContext;
   private gain?: GainNode;
+  private effectsGain?: GainNode;
   private timer?: number;
   private step = 0;
   private trackUrl?: string;
@@ -150,6 +151,30 @@ export class MusicPlayer {
     return { ...this.settings };
   }
 
+  playPick(): void {
+    if (this.settings.muted || this.settings.volume === 0 || !window.AudioContext) return;
+    this.context ??= new AudioContext();
+    const context = this.context;
+    void context.resume().catch(() => undefined);
+    if (!this.effectsGain) {
+      this.effectsGain = context.createGain();
+      this.effectsGain.gain.value = this.settings.volume;
+      this.effectsGain.connect(context.destination);
+    }
+    const oscillator = context.createOscillator();
+    const envelope = context.createGain();
+    const now = context.currentTime;
+    oscillator.type = 'sine';
+    oscillator.frequency.setValueAtTime(620, now);
+    oscillator.frequency.exponentialRampToValueAtTime(980, now + .12);
+    envelope.gain.setValueAtTime(.0001, now);
+    envelope.gain.exponentialRampToValueAtTime(.2, now + .012);
+    envelope.gain.exponentialRampToValueAtTime(.0001, now + .15);
+    oscillator.connect(envelope).connect(this.effectsGain);
+    oscillator.start(now);
+    oscillator.stop(now + .16);
+  }
+
   pause(): void {
     if (this.usingCustom) this.audio.pause();
     this.stopDefault();
@@ -163,6 +188,7 @@ export class MusicPlayer {
     const value = this.settings.muted ? 0 : this.settings.volume;
     this.audio.volume = value;
     if (this.gain && this.context) this.gain.gain.setTargetAtTime(value * 0.55, this.context.currentTime, 0.05);
+    if (this.effectsGain && this.context) this.effectsGain.gain.setTargetAtTime(value, this.context.currentTime, 0.05);
   }
 
   private persistSettings(): void {
