@@ -25,6 +25,8 @@ npx cap open ios
 
 在 Xcode 中选择 `App` target，设置 Signing & Capabilities 的 Team，并确认 Bundle Identifier 为 `com.wanlihua.findandsort`。先在模拟器和真机检查点击、拖动、音乐导入和进度恢复；然后使用 Product > Archive，通过 Organizer 导出或上传构建。Windows 可以准备和同步工程，但无法运行 Xcode、签名或导出 `.ipa`。
 
+公开仓库的 GitHub Actions 会在 `main` 更新时使用 macOS 编译，并在构建记录的 Artifacts 中提供 `FindAndSort-unsigned-ipa`。该 `.ipa` 未签名，不能直接安装到 iPhone，也不能上传 TestFlight；拿到 Apple 开发者账号后，需在 Xcode 中签名并重新导出。这个公开构建不含下方说明的私有照片。
+
 更改图标源图 `assets/app-icon.svg` 后，运行 `npm run art:app` 和 `npx capacitor-assets generate --ios`。
 
 ## 私有照片
