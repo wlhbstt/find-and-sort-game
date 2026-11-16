@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 1100">
+  <defs>
+    <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#a6d8e1"/><stop offset=".66" stop-color="#d8edf0"/><stop offset="1" stop-color="#f5e7d1"/></linearGradient>
+    <linearGradient id="glass" x2="1" y2="1"><stop stop-color="#ffffff" stop-opacity=".32"/><stop offset=".55" stop-color="#c8e8e8" stop-opacity=".06"/><stop offset="1" stop-color="#527c83" stop-opacity=".2"/></linearGradient>
+    <linearGradient id="floor" x2="0" y2="1"><stop stop-color="#f1e3ce"/><stop offset="1" stop-color="#c9b6a0"/></linearGradient>
+    <linearGradient id="wood" x2="0" y2="1"><stop stop-color="#e5bd83"/><stop offset=".45" stop-color="#d19a60"/><stop offset="1" stop-color="#a97041"/></linearGradient>
+    <pattern id="tile" width="126" height="126" patternUnits="userSpaceOnUse"><path d="M0 0H126V126H0Z" fill="none" stroke="#ac9c8b" stroke-width="3"/><path d="M5 5H121V121H5Z" fill="none" stroke="#fff8e8" stroke-width="2" opacity=".63"/></pattern>
+    <pattern id="grain" width="48" height="48" patternUnits="userSpaceOnUse"><path d="M3 12h18M28 39h16M12 31h10" stroke="#7d5840" stroke-width="1" opacity=".12"/></pattern>
+    <filter id="softShadow" x="-30%" y="-30%" width="160%" height="180%"><feGaussianBlur stdDeviation="9"/></filter>
+  </defs>
+
+  <rect width="700" height="1100" fill="#e6d2ae"/>
+  <rect width="700" height="411" fill="url(#sky)"/>
+  <path d="M0 283q95-60 184-14t170-10q90-47 174 9t172-11v157H0Z" fill="#b7c9ad" opacity=".76"/>
+  <path d="M0 327q90-30 174 0t173-17q104-25 190 14t163-2v92H0Z" fill="#8fb29f" opacity=".74"/>
+  <g fill="#9bafa8" opacity=".78"><path d="M40 227h62v107H40zM114 256h83v78h-83zM431 245h84v89h-84zM532 217h69v117h-69zM611 254h89v80h-89z"/></g>
+  <g fill="#d8dfcb" opacity=".82"><path d="M62 239h8v11h-8zm20 0h8v11h-8zm59 30h9v12h-9zm21 0h9v12h-9zm297-11h10v12h-10zm22 0h10v12h-10zm74-27h10v12h-10zm21 0h10v12h-10z"/></g>
+  <rect width="700" height="411" fill="url(#glass)"/>
+  <path d="M0 6H700M0 396H700M175 0v404M526 0v404" fill="none" stroke="#574f46" stroke-width="18"/>
+  <path d="M0 17H700M185 0v397M536 0v397" fill="none" stroke="#c6a778" stroke-width="5" opacity=".9"/>
+  <path d="M28 0 0 67v72L100 0M273 0 175 176v83L389 0M575 0 526 87v66L684 0" fill="#fff" opacity=".14"/>
+  <path d="M0 335H700M70 335v68M350 335v68M629 335v68" fill="none" stroke="#536c65" stroke-width="17"/>
+  <path d="M0 329H700" stroke="#c2d6cb" stroke-width="5"/>
+  <path d="M0 393H700v30H0Z" fill="#746654"/>
+  <path d="M0 398H700v10H0Z" fill="#c7a373"/>
+
+  <path d="M0 418H700v682H0Z" fill="url(#floor)"/>
+  <path d="M0 418H700v682H0Z" fill="url(#tile)" opacity=".8"/>
+  <path d="M0 418 700 463M0 542 700 577M0 672 700 694M0 802 700 811M0 932 700 930" fill="none" stroke="#fff5df" stroke-width="3" opacity=".42"/>
+  <path d="M0 418H700v12H0Z" fill="#a98d6c"/>
+  <path d="M0 425H700" stroke="#fff1d5" stroke-width="3" opacity=".8"/>
+
+  <path d="M15 475h334l22 29v241H15Z" fill="#67523d" opacity=".28" filter="url(#softShadow)"/>
+  <path d="M22 494h331v241H22Z" fill="url(#wood)" stroke="#795539" stroke-width="8"/>
+  <path d="M6 470h338l28 28H28Z" fill="#efc88d" stroke="#795539" stroke-width="7"/>
+  <path d="M28 505h316v14H28Z" fill="#fae0ae" opacity=".72"/>
+  <path d="M45 535h132v160H45ZM199 535h132v160H199Z" fill="#b47c4a" stroke="#785438" stroke-width="6"/>
+  <path d="M56 545h110v137H56ZM210 545h110v137H210Z" fill="#dca86c" stroke="#efc48b" stroke-width="4"/>
+  <path d="M145 597h18M211 597h18" stroke="#715038" stroke-width="9" stroke-linecap="round"/>
+  <path d="M35 723h319v20H35Z" fill="#76563d"/>
+  <path d="M40 515h296M44 711h293" stroke="#f9dcad" stroke-width="3" opacity=".58"/>
+  <rect x="22" y="496" width="331" height="239" fill="url(#grain)" opacity=".48"/>
+
+  <path d="M503 500h179v359H503Z" fill="#403f35" opacity=".24" filter="url(#softShadow)"/>
+  <path d="M525 517v304M668 517v304M515 613h163M515 710h163M516 813h162" fill="none" stroke="#625846" stroke-width="16" stroke-linecap="round"/>
+  <path d="M524 518v295M667 518v295M516 607h162M516 704h162M516 808h162" fill="none" stroke="#baa17a" stroke-width="6" stroke-linecap="round"/>
+  <path d="M510 600h170v16H510ZM510 697h170v16H510ZM510 801h170v16H510Z" fill="#d2af7a"/>
+  <path d="M536 837h121v10H536Z" fill="#665744"/>
+
+  <path d="M0 914q126-30 263 10t254-8q93-21 183 11" fill="none" stroke="#866f5a" stroke-width="8" opacity=".22"/>
+  <path d="M0 1076h700" stroke="#9f8e7a" stroke-width="8" opacity=".45"/>
+</svg>

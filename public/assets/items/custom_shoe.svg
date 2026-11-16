@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs><linearGradient id="shoe" x2="0" y2="1"><stop stop-color="#f7f1df"/><stop offset=".55" stop-color="#e3cfaa"/><stop offset="1" stop-color="#b98969"/></linearGradient></defs>
+  <ellipse cx="130" cy="214" rx="104" ry="17" fill="#34404b" opacity=".17"/>
+  <path d="M39 154q26-4 39-49l18-29q11-13 28-4l33 25q11 8 19 29l47 19q13 7 13 27v18q-3 16-21 18H43q-21-4-22-24v-14q1-11 18-16Z" fill="url(#shoe)" stroke="#514e50" stroke-width="6"/>
+  <path d="M24 177h209v18q-4 13-20 13H45q-20-4-21-19Z" fill="#f9faf6" stroke="#53575b" stroke-width="5"/><path d="M29 192h195" stroke="#de7455" stroke-width="5"/><path d="m82 115 60 28 25-5" fill="none" stroke="#e77853" stroke-width="12" stroke-linecap="round"/><path d="m97 91 47 36M88 104l45 34M79 117l44 32" stroke="#fffdf4" stroke-width="8" stroke-linecap="round"/><path d="M184 148q23 3 36 15" fill="none" stroke="#fff" stroke-width="7"/></svg>

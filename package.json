@@ -1,0 +1,30 @@
+{
+  "name": "find-and-sort-game",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "tsc --noEmit && vite build",
+    "test": "vitest run",
+    "art:gym": "tsx tools/compose-gym.ts",
+    "art:covers": "tsx tools/generate-covers.ts",
+    "art:app": "tsx tools/generate-app-art.ts",
+    "ios:sync": "npm run build && cap sync ios"
+  },
+  "dependencies": {
+    "@capacitor/core": "^8.6.2",
+    "@capacitor/ios": "^8.6.2",
+    "lucide": "1.72.0",
+    "phaser": "3.90.0"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^4.0.0",
+    "@capacitor/cli": "^8.6.2",
+    "sharp": "^0.35.5",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3",
+    "vite": "6.3.6",
+    "vitest": "3.2.4"
+  }
+}

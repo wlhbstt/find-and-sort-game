@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs><linearGradient id="cloth" x2="0" y2="1"><stop stop-color="#dff1ec"/><stop offset="1" stop-color="#6fa9a4"/></linearGradient></defs>
+  <ellipse cx="129" cy="220" rx="89" ry="15" fill="#4b7775" opacity=".2"/>
+  <path d="M43 89q0-20 21-22h121q22 2 23 22v34q-7 14-23 15H65q-22-2-22-17Z" fill="#a5d4c9" stroke="#427b78" stroke-width="6"/><path d="M62 112h143v78q0 17-18 19H76q-13 0-14-17Z" fill="url(#cloth)" stroke="#427b78" stroke-width="6"/><path d="M69 138h129M69 160h129M74 188h119" stroke="#f1f9ed" stroke-width="7" opacity=".75"/><path d="M56 86h143" stroke="#ecfbf4" stroke-width="6" opacity=".8"/></svg>

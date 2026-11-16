@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 1250">
+  <defs>
+    <linearGradient id="wall" x2="1" y2="1"><stop stop-color="#f3f5ea"/><stop offset="1" stop-color="#c9dfd5"/></linearGradient>
+    <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#9ed6e2"/><stop offset="1" stop-color="#d9efda"/></linearGradient>
+    <linearGradient id="wood" x2="0" y2="1"><stop stop-color="#f2cc99"/><stop offset=".5" stop-color="#d5a270"/><stop offset="1" stop-color="#ab7653"/></linearGradient>
+    <linearGradient id="floor" x2="0" y2="1"><stop stop-color="#ece7d6"/><stop offset="1" stop-color="#c6c3b6"/></linearGradient>
+    <pattern id="wallTiles" width="82" height="82" patternUnits="userSpaceOnUse"><path d="M0 0h82v82H0Z" fill="none" stroke="#a9c6bd" stroke-width="2"/><path d="M4 4h74v74H4Z" fill="none" stroke="#fff" stroke-width="2" opacity=".55"/></pattern>
+    <pattern id="floorTiles" width="142" height="142" patternUnits="userSpaceOnUse"><path d="M0 0h142v142H0Z" fill="none" stroke="#a5aa9d" stroke-width="3"/><path d="M8 8h126v126H8Z" fill="none" stroke="#fffdf1" stroke-width="3" opacity=".7"/></pattern>
+    <filter id="shadow" x="-25%" y="-25%" width="150%" height="170%"><feGaussianBlur stdDeviation="11"/></filter>
+  </defs>
+
+  <rect width="980" height="1250" fill="url(#wall)"/>
+  <path d="M0 0h980v660H0Z" fill="url(#wallTiles)" opacity=".53"/>
+  <path d="M0 0h980v20H0Z" fill="#d6c6a8"/>
+
+  <path d="M36 34h307v357H36Z" fill="#5b716e"/>
+  <path d="M52 50h275v325H52Z" fill="url(#sky)"/>
+  <path d="M52 260q83-49 161-3t114-7v125H52Z" fill="#a8ca9f"/>
+  <path d="M52 306q51-30 96-2t100-10q42-22 79 7v74H52Z" fill="#7faf85"/>
+  <path d="M188 50v325M52 207h275" stroke="#5b716e" stroke-width="13"/>
+  <path d="M196 50v325M52 214h275" stroke="#d9e8d6" stroke-width="4" opacity=".85"/>
+  <path d="M68 50 52 84v75L124 50M223 50l-35 70v81l96-151" fill="#fff" opacity=".15"/>
+  <path d="M28 383h324v22H28Z" fill="#e2c6a6" stroke="#6b7770" stroke-width="5"/>
+
+  <path d="M427 35h512v281H427Z" fill="url(#wood)" stroke="#856952" stroke-width="10"/>
+  <path d="M443 53h222v244H443ZM699 53h223v244H699Z" fill="#e9bb8e" stroke="#ae8265" stroke-width="6"/>
+  <path d="M457 69h194v210H457ZM713 69h195v210H713Z" fill="#f2d5aa" stroke="#cfaa82" stroke-width="4"/>
+  <path d="M630 167h15M718 167h15" stroke="#8b6851" stroke-width="9" stroke-linecap="round"/>
+  <path d="M425 315h519v18H425Z" fill="#9a7f66"/>
+
+  <path d="M0 410h980v263H0Z" fill="#dce8df"/>
+  <path d="M0 410h980v263H0Z" fill="url(#wallTiles)" opacity=".67"/>
+  <path d="M0 634h980v616H0Z" fill="url(#floor)"/>
+  <path d="M0 634h980v616H0Z" fill="url(#floorTiles)" opacity=".82"/>
+  <path d="M0 630h980v24H0Z" fill="#9cb6a9"/>
+  <path d="M0 631h980" stroke="#f9fff0" stroke-width="5"/>
+
+  <path d="M20 468h942v214H20Z" fill="#43594f" opacity=".22" filter="url(#shadow)"/>
+  <path d="M11 478h960v193H11Z" fill="url(#wood)" stroke="#907056" stroke-width="8"/>
+  <path d="M0 450h980v47H0Z" fill="#f5ebd4" stroke="#7e8d81" stroke-width="9"/>
+  <path d="M5 452h970v12H5Z" fill="#fffdf1" opacity=".7"/>
+  <path d="M28 519h277v129H28ZM344 519h281v129H344ZM663 519h286v129H663Z" fill="#b88965" stroke="#8e674f" stroke-width="6"/>
+  <path d="M42 531h249v104H42ZM358 531h253v104H358ZM677 531h258v104H677Z" fill="#e7bc8f" stroke="#f0d3a8" stroke-width="4"/>
+  <path d="M260 567h18M378 567h18M903 567h18" stroke="#86624c" stroke-width="8" stroke-linecap="round"/>
+  <path d="M112 450h252q-7 71-128 71t-124-71Z" fill="#8fa9a7" stroke="#687d7a" stroke-width="6"/>
+  <path d="M174 450q0-52 40-52t40 52" fill="none" stroke="#79908a" stroke-width="10"/>
+  <path d="M693 450h208v44H693Z" fill="#575f5b" stroke="#7e8d81" stroke-width="6"/>
+  <path d="M715 470h71M811 470h68" stroke="#a6b4aa" stroke-width="10" stroke-linecap="round"/>
+
+  <path d="M119 864h742l53 282H63Z" fill="#59675d" opacity=".2" filter="url(#shadow)"/>
+  <path d="M155 857h670v253H155Z" fill="url(#wood)" stroke="#8b6c55" stroke-width="9"/>
+  <path d="M112 813h714l51 54H155Z" fill="#f2e4ca" stroke="#85958b" stroke-width="9"/>
+  <path d="M130 817h685" stroke="#fffdf0" stroke-width="5" opacity=".8"/>
+  <path d="M186 890h608v185H186Z" fill="#c99870" stroke="#a87a5c" stroke-width="5"/>
+  <path d="M469 890v185M212 1004h554" stroke="#9c745b" stroke-width="6"/>
+  <path d="M75 1210h830" stroke="#a6a99d" stroke-width="7" opacity=".36"/>
+</svg>
