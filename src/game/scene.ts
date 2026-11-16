@@ -12,8 +12,8 @@ type SceneOptions = {
   camera?: { x: number; y: number; zoom?: number };
 };
 
-const MIN_ZOOM = .85;
-const MAX_ZOOM = 1.25;
+export const MIN_ZOOM = .5;
+export const MAX_ZOOM = 1.25;
 
 export class GameScene extends Phaser.Scene {
   private readonly options: SceneOptions;
@@ -65,7 +65,6 @@ export class GameScene extends Phaser.Scene {
       this.sprites.set(item.id, image);
     }
 
-    this.cameras.main.setBounds(0, 0, level.width, level.height);
     const camera = this.cameras.main;
     camera.setZoom(Phaser.Math.Clamp(this.options.camera?.zoom ?? 1, MIN_ZOOM, MAX_ZOOM));
     camera.setScroll(this.options.camera?.x ?? 0, this.options.camera?.y ?? 0);
@@ -203,8 +202,15 @@ export class GameScene extends Phaser.Scene {
 
   private clampCamera(): void {
     const camera = this.cameras.main;
-    camera.scrollX = camera.clampX(camera.scrollX);
-    camera.scrollY = camera.clampY(camera.scrollY);
+    const { width, height } = this.options.level;
+    const visibleWidth = camera.width / camera.zoom;
+    const visibleHeight = camera.height / camera.zoom;
+    camera.scrollX = visibleWidth >= width
+      ? (width - camera.width) / 2
+      : Phaser.Math.Clamp(camera.scrollX, (visibleWidth - camera.width) / 2, width - (visibleWidth + camera.width) / 2);
+    camera.scrollY = visibleHeight >= height
+      ? (height - camera.height) / 2
+      : Phaser.Math.Clamp(camera.scrollY, (visibleHeight - camera.height) / 2, height - (visibleHeight + camera.height) / 2);
   }
 
   private setZoomAround(value: number, x: number, y: number): void {

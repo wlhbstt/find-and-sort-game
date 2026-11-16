@@ -3,7 +3,7 @@ import Phaser from 'phaser';
 import { MusicPlayer } from './audio/music';
 import { itemAssetUrl } from './game/assets';
 import { createGame, pickItem, retryGame, undoPick, unlockSlot, type GameState } from './game/model';
-import { GameScene } from './game/scene';
+import { GameScene, MAX_ZOOM, MIN_ZOOM } from './game/scene';
 import { loadSave, saveGame, unlockNextLevel, unlockedLevelIndex } from './game/save';
 import { level1 } from './levels/level1';
 import { level2 } from './levels/level2';
@@ -68,8 +68,8 @@ function persist(): void {
 
 function updateZoomButtons(): void {
   const zoom = sceneReady ? scene.zoomLevel() : 1;
-  document.querySelector<HTMLButtonElement>('#zoom-out')!.disabled = zoom <= .85;
-  document.querySelector<HTMLButtonElement>('#zoom-in')!.disabled = zoom >= 1.25;
+  document.querySelector<HTMLButtonElement>('#zoom-out')!.disabled = zoom <= MIN_ZOOM + .001;
+  document.querySelector<HTMLButtonElement>('#zoom-in')!.disabled = zoom >= MAX_ZOOM - .001;
 }
 
 async function flyItem(id: string, destination: HTMLElement): Promise<void> {
@@ -346,6 +346,7 @@ scene = new GameScene({
   onReady: () => {
     sceneReady = true;
     persist();
+    updateZoomButtons();
     if (state.mode === 'full') openFailure();
     if (state.mode === 'won') openWin();
   },
