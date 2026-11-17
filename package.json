@@ -11,7 +11,7 @@
     "art:covers": "tsx tools/generate-covers.ts",
     "art:stickers": "tsx tools/generate-stickers.ts",
     "art:app": "tsx tools/generate-app-art.ts",
-    "ios:sync": "npm run build && cap sync ios"
+    "ios:sync": "npm run build && tsx tools/prune-runtime-assets.ts && cap sync ios"
   },
   "dependencies": {
     "@capacitor/core": "^8.6.2",
