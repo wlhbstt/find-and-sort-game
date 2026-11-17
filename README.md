@@ -37,6 +37,14 @@ npx cap open ios
 2. 运行 `npm run art:gym` 生成两张合成背景图。
 3. 在本机新建 `.env.local`，写入 `VITE_PRIVATE_PHOTOS=true`，再运行 `npm run ios:sync`。
 
+若要把本机 `dist/` 加入 GitHub Actions 生成的无签名 IPA，使用原始 macOS 构建产物作为底包：
+
+```bash
+py -3 tools/repack-ipa.py FindAndSort-unsigned.ipa dist FindAndSort-private-unsigned.ipa
+```
+
+不要把 IPA 解压后用 Windows 压缩工具重新打包；这会丢失 iOS 主程序的 Unix 可执行权限。重打包后的 IPA 仍未签名，需要签名后才能安装。
+
 原始人物照片、合成图、本地开关以及同步到 `ios/App/App/public/` 的网页资源都不会进入 Git。发布应用前需确认照片的使用权。
 
 ## 素材
