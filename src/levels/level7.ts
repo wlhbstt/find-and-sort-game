@@ -3,7 +3,7 @@ import covers from './covers7.json';
 
 export const level7 = packedLevel({
   id: 'gym-lockers', name: '健身房更衣室',
-  background: import.meta.env.VITE_PRIVATE_PHOTOS === 'true' ? '/assets/gym-lockers-photo.png' : '/assets/gym-lockers.svg',
+  background: import.meta.env?.VITE_PRIVATE_PHOTOS === 'true' ? '/assets/gym-lockers-photo.png' : '/assets/gym-lockers.svg',
   initialCamera: { x: 770, y: 320 },
   width: 1460, height: 2380, columns: 17, rows: 26, stride: 113,
   stepX: 79, stepY: 86, itemSize: 130,

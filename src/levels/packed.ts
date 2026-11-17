@@ -1,5 +1,5 @@
 import type { Category, Level, LevelItem } from '../game/level';
-import { itemPose } from './pose';
+import { itemPose, scatter } from './pose';
 
 type PackedLevel = Omit<Level, 'items' | 'categories'> & {
   categories: Category[];
@@ -33,13 +33,12 @@ export function packedLevel(config: PackedLevel): Level {
     const cell = cells[index];
     const column = cell % columns;
     const row = Math.floor(cell / columns);
+    const position = scatter(index, 22 + column * stepX + (row % 2) * 18,
+      66 + row * stepY, reserved ? 48 : stepX, reserved ? 48 : stepY);
     return {
       id: `item-${String(index + 1).padStart(3, '0')}`,
       categoryId,
-      ...itemPose(index,
-        22 + column * stepX + ((row * 31 + column * 17) % 33) - 16,
-        66 + row * stepY + ((row * 19 + column * 29) % 31) - 15,
-        itemSize, config.width, config.height),
+      ...itemPose(index, position.x, position.y, itemSize, config.width, config.height),
       coveredBy: covers[String(index + 1)] ?? [],
       variant: index % 7,
     };

@@ -48,4 +48,6 @@
   <path d="M67 711h627v21H67Z" fill="#674b39"/>
 
   <path d="M76 1016q153-46 313 4t350-4" fill="none" stroke="#51483f" stroke-width="8" opacity=".18"/>
+  <defs><radialGradient id="ambient" cx="24%" cy="18%" r="95%"><stop stop-color="#fff" stop-opacity=".14"/><stop offset=".6" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#273c3b" stop-opacity=".2"/></radialGradient></defs>
+  <rect width="820" height="1100" fill="url(#ambient)"/>
 </svg>

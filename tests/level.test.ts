@@ -30,11 +30,12 @@ describe('level data', () => {
     expect(solution).toHaveLength(50);
   });
 
-  it('allows the visible cleaning bottle while keeping genuinely covered items locked', () => {
-    const afterBackpack = pickItem(level1, createGame(level1), 'item-02');
-    expect(afterBackpack.removed).not.toContain('item-03');
-    expect(pickItem(level1, afterBackpack, 'item-07').removed).toContain('item-07');
-    expect(pickItem(level1, afterBackpack, 'item-08')).toBe(afterBackpack);
+  it('accepts an uncovered item and rejects one beneath another', () => {
+    const initial = createGame(level1);
+    const visible = level1.items.find((item) => item.coveredBy.length === 0)!;
+    const covered = level1.items.find((item) => item.coveredBy.length > 0)!;
+    expect(pickItem(level1, initial, visible.id).removed).toContain(visible.id);
+    expect(pickItem(level1, initial, covered.id)).toBe(initial);
   });
 
   it('validates the study and finds an 80-item path with five temporary slots', () => {

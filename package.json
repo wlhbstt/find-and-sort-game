@@ -9,6 +9,7 @@
     "test": "vitest run",
     "art:gym": "tsx tools/compose-gym.ts",
     "art:covers": "tsx tools/generate-covers.ts",
+    "art:stickers": "tsx tools/generate-stickers.ts",
     "art:app": "tsx tools/generate-app-art.ts",
     "ios:sync": "npm run build && cap sync ios"
   },

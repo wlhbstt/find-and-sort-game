@@ -49,4 +49,6 @@
 
   <path d="M0 914q126-30 263 10t254-8q93-21 183 11" fill="none" stroke="#866f5a" stroke-width="8" opacity=".22"/>
   <path d="M0 1076h700" stroke="#9f8e7a" stroke-width="8" opacity=".45"/>
+  <defs><radialGradient id="ambient" cx="28%" cy="12%" r="95%"><stop stop-color="#fff" stop-opacity=".13"/><stop offset=".58" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#263841" stop-opacity=".2"/></radialGradient></defs>
+  <rect width="700" height="1100" fill="url(#ambient)"/>
 </svg>

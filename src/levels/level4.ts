@@ -4,7 +4,7 @@ import covers from './covers4.json';
 export const level4 = packedLevel({
   id: 'night-market', name: '夜市', background: '/assets/night-market.svg',
   width: 1100, height: 1680, columns: 12, rows: 15, stride: 73,
-  stepX: 82, stepY: 100, itemSize: 122, covers,
+  stepX: 82, stepY: 100, itemSize: 137, covers,
   categories: [
     { id: 'street-food', label: '小吃', target: 16 },
     { id: 'drinks', label: '饮料', target: 16 },

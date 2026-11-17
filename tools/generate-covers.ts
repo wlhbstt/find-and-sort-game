@@ -61,8 +61,8 @@ async function opaqueOverlap(a: LevelItem, b: LevelItem): Promise<number> {
       const bx = Math.floor(bCos * bdx + bSin * bdy + b.width / 2);
       const by = Math.floor(-bSin * bdx + bCos * bdy + b.height / 2);
       if (ax < 0 || ay < 0 || bx < 0 || by < 0 || ax >= a.width || ay >= a.height || bx >= b.width || by >= b.height) continue;
-      if (first.pixels[(ay * first.width + ax) * 4 + 3] > 40 &&
-          second.pixels[(by * second.width + bx) * 4 + 3] > 40) count += 1;
+      if (first.pixels[(ay * first.width + ax) * 4 + 3] > 88 &&
+          second.pixels[(by * second.width + bx) * 4 + 3] > 88) count += 1;
     }
   }
   return count;

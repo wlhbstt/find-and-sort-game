@@ -1,6 +1,6 @@
 import type { Level, LevelItem } from '../game/level';
 import covers from './covers2.json';
-import { itemPose } from './pose';
+import { itemPose, scatter } from './pose';
 
 const categories = [
   { id: 'books', label: '书本', target: 8 },
@@ -23,14 +23,12 @@ const categoryOrder = groupedCategories.map((_, index) => {
 const items: LevelItem[] = categoryOrder.map((categoryId, index) => {
   const column = index % 8;
   const row = Math.floor(index / 8);
-  const variant = index % 4;
+  const variant = index % 7;
+  const position = scatter(index, 12 + column * 94 + (row % 2) * 23, 75 + row * 91, 88, 80);
   return {
     id: `item-${String(index + 1).padStart(2, '0')}`,
     categoryId,
-    ...itemPose(index,
-      12 + column * 94 + (row % 2) * 10 + ((row * 17 + column * 11) % 23) - 11,
-      75 + row * 91 + ((row * 13 + column * 7) % 25) - 12,
-      110, 820, 1100),
+    ...itemPose(index, position.x, position.y, 124, 820, 1100),
     coveredBy: (covers as Record<string, string[]>)[String(index + 1)] ?? [],
     variant,
   };

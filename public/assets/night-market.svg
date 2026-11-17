@@ -35,4 +35,6 @@
     <path d="M83 844h243v90H83ZM439 874h242v73H439ZM803 844h238v91H803Z" fill="url(#glass)" opacity=".67"/>
   </g>
   <path d="M0 1642h1100v38H0Z" fill="#405d5d"/>
+  <defs><radialGradient id="ambient" cx="48%" cy="29%" r="85%"><stop stop-color="#ffe1a0" stop-opacity=".12"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#0c1b26" stop-opacity=".24"/></radialGradient></defs>
+  <rect width="1100" height="1680" fill="url(#ambient)"/>
 </svg>

@@ -12,4 +12,6 @@
   <path d="M143 1416q150-67 311 10l90 275-386 72Z" fill="#8a9d8d" stroke="#5e6d66" stroke-width="13"/><path d="M177 1442q131-43 246 10l51 199-284 52Z" fill="#b7c2ad" stroke="#e2dfbf" stroke-width="7"/>
   <path d="M890 1436q150-55 339 31l61 282-379 26Z" fill="#a07969" stroke="#6d5850" stroke-width="12"/><path d="M924 1460q142-38 274 32l37 209-290 19Z" fill="#d2aa89" stroke="#e9d0a8" stroke-width="7"/>
   <path d="M570 1798h267v67H570Z" fill="#6e7067" stroke="#4e5955" stroke-width="9"/><path d="M612 1757h183v54H612Z" fill="#b1a182" stroke="#65594f" stroke-width="7"/>
+  <defs><radialGradient id="ambient" cx="50%" cy="35%" r="83%"><stop stop-color="#fff2d1" stop-opacity=".12"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#272e32" stop-opacity=".24"/></radialGradient></defs>
+  <rect width="1400" height="1940" fill="url(#ambient)"/>
 </svg>
